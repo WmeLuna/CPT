@@ -18,6 +18,9 @@ const PASS = "948BD7AB5359488C23F8DC7BA6D5FC7A";
 // password = PacketTraced
 
 async function edit() {
+  document.querySelector("#loading").style["display"] = "block";
+  document.querySelector("#file").disabled = true;
+
   const file = document.querySelector("#file").files[0];
   let xml;
   await fetch(
@@ -44,6 +47,8 @@ async function edit() {
     })
     .catch((err) => {
       console.log(`err: ${err}`);
+      document.querySelector("#error").style["display"] = "block";
+      document.querySelector("#file").disabled = true;
     });
 
   const compressed = pako.deflate(new TextEncoder().encode(xml));
@@ -69,5 +74,11 @@ async function edit() {
     })
     .catch((err) => {
       console.log(`err: ${err}`);
+      document.querySelector("#error").style["display"] = "block";
+      document.querySelector("#file").disabled = true;
+    })
+    .finally(() => {
+      document.querySelector("#loading").style["display"] = "none";
     });
+  document.querySelector("#file").disabled = false;
 }
